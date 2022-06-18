@@ -1,0 +1,33 @@
+.searchbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: max-content;
+}
+
+.searchbar__input {
+    padding: 1rem 4.2rem;
+    border-radius: 1.5rem;
+    border: none;
+    outline: none !important;
+
+    background-color: #fff;
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.15);
+
+    font-weight: 700;
+    font-size: 1.2em;
+}
+
+.searchbar__input::placeholder {
+    color: var(--gray); 
+}
+
+.searchbar__leading-icon {
+    position: absolute;
+    left: 1rem;
+}
+
+.searchbar__trailing-icon {
+    position: absolute;
+    right: 1rem;
+}

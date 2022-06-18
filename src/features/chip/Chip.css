@@ -1,0 +1,38 @@
+.chip {
+    width: min-content;
+    height: 3.2rem;
+    padding: 0.4rem 0.8rem;
+
+    display: flex;
+    align-items: center;
+    column-gap: 0.4rem;
+
+    border: var(--light-gray) 0.2rem solid;
+    border-radius: 10rem; 
+    box-shadow: 0 0.1rem 0.4rem rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+
+    transition: all .1s linear;
+
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.chip_active {
+    border: none;
+}
+
+.chip__checkmark {
+    animation: append-animate .1s linear;
+}
+
+@keyframes append-animate {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;	
+	}
+}

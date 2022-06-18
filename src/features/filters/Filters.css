@@ -1,0 +1,26 @@
+.filters {
+    width: auto;
+    padding: 1rem;
+}
+
+.filters__header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.filters__section-header {
+    margin-bottom: 1rem;
+}
+
+.filters__chips {
+    display: flex;
+    column-gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filters__radio-group {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
