@@ -1,22 +1,31 @@
 import React, { FC, useState, ReactElement } from "react";
 import './Dropdown.css'
-import { DropdownItemProps, DropdownItemImpl } from "./DropdownItem";
+import { DropdownItemProps } from "./DropdownItem";
 
-
-
-interface DropdownProps {
-    placeholder?: string;
-    onChange: (value: any) => void;
-    children: ReactElement<DropdownItemProps>[] | ReactElement<DropdownItemProps>;
+interface DropdownSettings {
+    onClick: (id: number, value: any) => void;
+    selected?: any;
 }
 
-const Dropdown: FC<DropdownProps> = ({ placeholder, children, onChange }) => {
-    const [expanded, setExpanded] = useState<boolean>(false)
-    const [selected, setSelected] = useState<number | null>(null)
+export const DropdownContext = React.createContext<DropdownSettings>({
+    onClick: (id: any, value: any) => {}
+})
 
-    const onItemClickHandler = (itemId: number, value: any) => {
+type Props = {
+    placeholder?: string;
+    onChange: (value: any) => void;
+    className?: string;
+    defaultId?: any;
+    children?: React.ReactNode;
+}
+
+const Dropdown: FC<Props> = ({ placeholder, children, defaultId, onChange, className }) => {
+    const [expanded, setExpanded] = useState<boolean>(false)
+    const [selected, setSelected] = useState<any | undefined>(defaultId)
+
+    const onItemClickHandler = (itemId: any, value: any) => {
         if(selected === itemId) {
-            setSelected(null)
+            setSelected(undefined)
             onChange(null)
         } else {
             setSelected(itemId)
@@ -24,14 +33,15 @@ const Dropdown: FC<DropdownProps> = ({ placeholder, children, onChange }) => {
         }
     }
 
+    const dropdownSettings = {
+        onClick: onItemClickHandler,
+        selected: selected
+    }
+    
     return (
         <div className="dropdown">
-            <div className="dropdown__inner noselect" onClick={() => setExpanded(!expanded)}>
-                { selected !== null ? Array.isArray(children) ? 
-                    <p className="dropdown__text">{ children[selected].props.label }</p> : 
-                    <p className="dropdown__text">{ children.props.label }</p> : 
-                    <p className="dropdown__placeholder">{ placeholder || "Select..." }</p>
-                }
+            <div className={"dropdown__inner noselect " + (className ? className : "")} onClick={() => setExpanded(!expanded)}>
+            <p className="dropdown__placeholder">{ placeholder || "Select..." }</p>
                 { expanded ? 
                 <span className="dropdown__icon material-symbols-rounded">
                     expand_less
@@ -40,30 +50,33 @@ const Dropdown: FC<DropdownProps> = ({ placeholder, children, onChange }) => {
                     expand_more
                 </span> }
             </div>
-            <div className={"dropdown__wrapper " + (expanded ? "dropdown__wrapper_expanded" : "")}>
-                { Array.isArray(children) ?
-                    children.map((item, ind) => {
-                        return <DropdownItemImpl 
-                            key={ind}
-                            itemId={ind}
-                            value={item.props.value} 
-                            label={item.props.label} 
-                            selected={ind === selected}
-                            onClick={onItemClickHandler}
-                        />
-                    }) :
-                    <DropdownItemImpl
-                        itemId={0}
-                        value={children.props.value} 
-                        label={children.props.label} 
-                        selected={0 === selected}
-                        onClick={onItemClickHandler}
-                    />
-                }
-            </div>
-            
+            <DropdownContext.Provider value={dropdownSettings}>
+                <div className={"dropdown__wrapper " + (expanded ? "dropdown__wrapper_expanded" : "")}>
+                    { children }
+                </div>
+            </DropdownContext.Provider>
         </div>
     )
 } 
 
 export default Dropdown
+
+// { Array.isArray(children) ?
+//     children.map((item, ind) => {
+//         return <DropdownItemImpl 
+//             key={ind}
+//             itemId={ind}
+//             value={item.props.value} 
+//             label={item.props.label} 
+//             selected={ind === selected}
+//             onClick={onItemClickHandler}
+//         />
+//     }) :
+//     <DropdownItemImpl
+//         itemId={0}
+//         value={children.props.value} 
+//         label={children.props.label} 
+//         selected={0 === selected}
+//         onClick={onItemClickHandler}
+//     />
+// }

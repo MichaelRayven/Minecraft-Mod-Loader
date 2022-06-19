@@ -1,26 +1,21 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
+import { DropdownContext } from "./Dropdown";
 import './Dropdown.css'
 
 export interface DropdownItemProps {
     value: any;
     label: string;
+    id: any;
 }
 
-export interface DropdownItemImplProps {
-    value: any;
-    label: string;
-    itemId: number;
-    onClick: (itemId: number, value: any) => void;
-    selected: boolean;
-}
+const DropdownItem: FC<DropdownItemProps> = ({ label, value, id }) => {
+    const { onClick, selected } = useContext(DropdownContext)
 
-const DropdownItem: FC<DropdownItemProps> = ({ label, value }) => {
-    return (<p></p>)
-}
-
-export const DropdownItemImpl: FC<DropdownItemImplProps> = ({ label, value, selected, onClick, itemId }) => {
     return (
-        <p onClick={() => onClick(itemId, value)} className={"dropdown__item " + (selected ? "dropdown__item_selected" : "")}>{ label }</p>
+        <p 
+            onClick={() => onClick(id, value)} 
+            className={"dropdown__item " + (selected === id ? "dropdown__item_selected" : "")}
+        >{ label }</p>
     )
 }
 
